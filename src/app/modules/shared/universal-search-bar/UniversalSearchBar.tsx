@@ -1,10 +1,8 @@
 import React from "react";
 import queryString from "query-string";
 import { Link } from "react-router-dom";
-import { I18n } from "react-redux-i18n";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
-import { PAGE_STATES } from "src/app/utils/Constants";
 // import { 
 //     apiPost_search, 
 // } from 'app/service/PostService';
@@ -133,7 +131,6 @@ export class UniversalSearchBar extends React.Component<Props> {
 
     render() {
         const { isShowUniversalSearch, searchKey } = this.state;
-        const orderStatusesI18n = I18n.t("common.order_status"); 
 
         return (
             <Dropdown

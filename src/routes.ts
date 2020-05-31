@@ -1,13 +1,13 @@
 import { AuthModule } from 'src/app/modules/auth';
 import { HomeModule } from 'src/app/modules/home';
-import { ProfileModule } from 'src/app/modules/profile';
-import { SettingModule } from 'src/app/modules/setting';
-import NotFoundPage from 'src/app/modules/home/not-found-page/NotFoundPage';
+import { SettingProfileModule } from 'src/app/modules/setting-profile';
+import { SettingModule } from 'src/app/modules/setting-general';
+import NotFoundPage from 'src/app/modules/home/not-found/NotFoundPage';
 
 export const routes = [
     ...HomeModule,
     ...AuthModule,
-    ...ProfileModule,
+    ...SettingProfileModule,
     ...SettingModule,
     { path: "/:id", component: NotFoundPage, exact: false, isPrivate: false, allowRoles: [] },
     { path: "*", component: NotFoundPage, exact: false, isPrivate: false, allowRoles: [] },

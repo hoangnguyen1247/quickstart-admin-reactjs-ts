@@ -1,7 +1,7 @@
 import React from 'react';
+import cookie from "react-cookies";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { History } from 'history';
-import cookie from "react-cookies";
 
 import canUseDOM from "src/can-use-dom";
 import { routes } from 'src/routes';
@@ -18,11 +18,6 @@ function App({
 }: Props) {
 
     let roleIds = [];
-    try {
-        roleIds = cookie.load(LOCAL_STORAGE.ROLE_IDS);
-    } catch (error) {
-        roleIds = [];
-    }
 
     const _renderPrivateRouter = (profile, route, index) => {
         const { component: Component, ...rest } = route;
@@ -52,21 +47,29 @@ function App({
         <AppContainer
             history={history}
         >
-            {({ profile }) => (
-                <div className="routes-container">
-                    <Switch>
-                        {routes.map((route, index) => {
-                            const { component: Component, allowRoles, ...rest } = route;
+            {({ profile }) => {
+                try {
+                    roleIds = cookie.load(LOCAL_STORAGE.ROLE_IDS);
+                } catch (error) {
+                    roleIds = [];
+                }
+                
+                return (
+                    <div className="routes-container">
+                        <Switch>
+                            {routes.map((route, index) => {
+                                const { component: Component, allowRoles, ...rest } = route;
 
-                            if (canUseDOM && route.isPrivate) {
-                                return _renderPrivateRouter(profile, route, index);
-                            } else {
-                                return (<Route key={index} component={Component} {...rest} />);
-                            }
-                        })}
-                    </Switch>
-                </div>
-            )}
+                                if (canUseDOM && route.isPrivate) {
+                                    return _renderPrivateRouter(profile, route, index);
+                                } else {
+                                    return (<Route key={index} component={Component} {...rest} />);
+                                }
+                            })}
+                        </Switch>
+                    </div>
+                )
+            }}
         </AppContainer>
     );
 }

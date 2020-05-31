@@ -46,6 +46,14 @@ export function LoginForm({
         });
     };
 
+    const _handleInputKeyPress = (event) => {
+        if (event.key === "Enter") {
+            _submitForm({
+
+            });
+        }
+    }
+
     const _handleInputChange = (fieldName: string, value: any) => {
         const errorMessage = _validateField(fieldName, value);
 
@@ -66,7 +74,7 @@ export function LoginForm({
     const _validateForm = () => {
         const fieldErrors = {
             username: _validateField("username", fields.username),
-            password: _passwordInputRef.current ? _passwordInputRef.current.value : "",
+            password: _validateField("password", _passwordInputRef.current ? _passwordInputRef.current.value : ""),
         }
 
         dispatchFieldErrors(fieldErrors);
@@ -97,6 +105,7 @@ export function LoginForm({
                         value={fields.username}
                         errorMessage={fieldErrors.username}
                         onChange={(event) => _handleInputChange("username", event.currentTarget.value || "")}
+                        onKeyPress={_handleInputKeyPress}
                     />
                 </div>
             </div>
@@ -108,9 +117,9 @@ export function LoginForm({
                         label={loginI18n.loginForm.label.password}
                         placeholder=""
                         name="password"
-                        value={fields.password}
                         // errorMessage={fieldErrors.password}
                         // onChange={(event) => _handleInputChange("password", event.currentTarget.value || "")}
+                        onKeyPress={_handleInputKeyPress}
                     />
                 </div>
             </div>

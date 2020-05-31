@@ -28,9 +28,9 @@ export function apiAuth_login(data: Object): Promise<any> {
     })
 };
 
-export function apiAuth_refreshToken(data: Object): Promise<any> {
+export function apiAuth_refreshToken(): Promise<any> {
     return new Promise((resolve, reject) => {
-        apiPostUrlencoded(APIS_AUTH__REFRESH_TOKEN, data)
+        apiPostUrlencoded(APIS_AUTH__REFRESH_TOKEN, { refresh_token: cookie.load(LOCAL_STORAGE.REFRESH_TOKEN) })
             .then(res => {
                 const expiresIn = !isNaN(res.data.expires_in) ? moment.unix(res.data.expires_in).toDate() : undefined;
 

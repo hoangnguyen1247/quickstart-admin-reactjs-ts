@@ -1,6 +1,5 @@
 import React from "react";
 
-import { UploadableImage } from "./UploadableImage";
 import { Image } from "./Image";
 
 type Props = {

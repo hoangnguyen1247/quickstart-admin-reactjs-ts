@@ -1,8 +1,9 @@
 import React from "react";
-import { Container, Breadcrumb, BreadcrumbItem, Button } from "reactstrap";
 import ArrowLeftIcon from "mdi-react/ArrowLeftIcon";
+import { Container, Breadcrumb, BreadcrumbItem, Button } from "reactstrap";
+import { Link } from "react-router-dom";
 
-import { AnyObject } from "../../../../common";
+import { AnyObject } from "src/common";
 
 type Props = {
     children: React.ReactNode,
@@ -43,7 +44,7 @@ export function Toolbar({
                                         <BreadcrumbItem 
                                             key={index}
                                         >
-                                            <a href="#">{item.label}</a>
+                                            <Link to={item.link}>{item.label}</Link>
                                         </BreadcrumbItem>
                                     )
                                 })

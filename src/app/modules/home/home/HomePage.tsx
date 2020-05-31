@@ -2,7 +2,7 @@ import React from "react";
 import PlusIcon from "mdi-react/PlusIcon";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 import { I18n } from "react-redux-i18n";
 import { Helmet } from "react-helmet-async";
 
@@ -13,6 +13,8 @@ import { PageInner } from "src/app/modules/shared/page-inner/PageInner";
 import { NavigationBar } from "src/app/modules/shared/navigation/NavigationBar";
 import { Toolbar } from "src/app/modules/shared/toolbar/Toolbar";
 import { Footer } from "src/app/modules/shared/footer/Footer";
+
+import { CalendarCard } from "./children/CalendarCard";
 
 const mapStateToProps = () => {
     return {
@@ -30,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true });
 
-class SettingProfilePage extends React.Component {
+class HomePage extends React.Component {
 
     static contextType = AppContext;
 
@@ -56,7 +58,19 @@ class SettingProfilePage extends React.Component {
     }
 
     render() {
+        const {
+            profile,
+        } = this.context;
         const homeI18n = I18n.t("home");
+
+        if (!profile) {
+            return (
+                <div>
+                    <Spinner />
+                    Loading...
+                </div>
+            )
+        }
 
         return (
             <div>
@@ -70,6 +84,7 @@ class SettingProfilePage extends React.Component {
                     <PageInner>
                         <Toolbar
                             breadcrumbItems={[
+                                { label: "Home", link: "/home" },
                             ]}
                             breadcrumbActiveItemLabel="Home"
                         >
@@ -87,10 +102,12 @@ class SettingProfilePage extends React.Component {
                         </div>
                     </PageInner>
                 </div>
+                <CalendarCard
+                />
                 <Footer />
             </div>
         );
     }
 }
 
-export default connector(SettingProfilePage);
+export default connector(HomePage);

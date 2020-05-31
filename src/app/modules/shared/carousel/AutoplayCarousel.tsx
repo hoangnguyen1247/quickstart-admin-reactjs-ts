@@ -63,7 +63,6 @@ export class AutoplayCarousel extends React.Component<Props> {
 
     render() {
         const {
-            className,
             itemClassName,
             items,
             isShowMask,

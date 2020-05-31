@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppContext } from "../../../AppContext";
+import { AppContext } from "src/app/AppContext";
 
 import { DesktopHeaderBar } from "./children/DesktopHeaderBar";
 import { MobileHeaderBar } from "./children/MobileHeaderBar";
@@ -9,7 +9,7 @@ import { MobileActionBar } from "./children/MobileActionBar";
 
 export function Header() {
 
-    const { minWidth992, isShowMobileHomeBar, isShowMobileSearchBar, isShowMobileActionBar } = React.useContext(AppContext);
+    const { minWidth992, isShowMobileSearchBar, isShowMobileActionBar } = React.useContext(AppContext);
 
     if (!minWidth992) {
         if (isShowMobileActionBar) {

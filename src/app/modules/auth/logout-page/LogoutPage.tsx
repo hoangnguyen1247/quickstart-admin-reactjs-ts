@@ -2,7 +2,7 @@ import React from "react";
 import cookie from "react-cookies";
 import { History } from "history";
 
-import { LOCAL_STORAGE } from "../../../utils/Constants";
+import { LOCAL_STORAGE } from "src/app/utils/Constants";
 
 type Props = {
     history: History,
@@ -30,6 +30,8 @@ class LogutPage extends React.Component<Props> {
         cookie.remove(LOCAL_STORAGE.ACCESS_TOKEN, { path: "/" });
         cookie.remove(LOCAL_STORAGE.ACCESS_TOKEN_EXPIRES_IN, { path: "/" });
         cookie.remove(LOCAL_STORAGE.REFRESH_TOKEN, { path: "/" });
+        cookie.remove(LOCAL_STORAGE.LOGGED_USER, { path: "/" });
+
     };
 
     render() {
