@@ -1,0 +1,35 @@
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../node_modules/react-image-lightbox/style.css';
+@import "../node_modules/react-big-calendar/lib/css/react-big-calendar.css";
+
+@import "./assets/styles/react-datepicker/react-datepicker.scss";
+@import "./assets/styles/react-datepicker/react-datepicker-custom.scss";
+@import "./assets/styles/react-slick/slick.scss";
+@import "./assets/styles/react-slick/slick-theme.scss";
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.header {
+    z-index: 999;
+}
+
+.embed-responsive-lg-21by9::before {
+    @media screen and (min-width: 992px) {
+        padding-top: 42.857143%;
+    }
+}
+  
+.embed-responsive-sm-16by9::before {
+    @media screen and (max-width: 991px) {
+        padding-top: 56.25%;
+    }
+}

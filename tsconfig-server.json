@@ -1,0 +1,47 @@
+{
+    "version": "2.4.2",
+    "compilerOptions": {
+        "baseUrl": "./",
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
+        "target": "es2016",
+        "module": "commonjs",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "es6",
+            "es7"
+        ],
+        "sourceMap": true,
+        "outDir": "./dist",
+
+        "strict": true,
+        "noImplicitAny": false,
+        "noImplicitThis": false,
+        "strictPropertyInitialization": false,
+        "strictNullChecks": false,
+
+        "moduleResolution": "node",
+
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "resolveJsonModule": true,
+
+        "noEmit": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+
+        "typeRoots": [
+            "./types",
+            "./node_modules/@types"
+        ],
+        "jsx": "react"
+    },
+    "include": [
+        "src/**/*",
+        "server/**/*",
+        "types/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
