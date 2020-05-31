@@ -1,13 +1,15 @@
-import { home } from "../en/home/home";
-// import { validations } from "./validations";
+import { home } from "./home/home";
+import { login } from "./auth/login";
+import { validations } from "./common/validations";
 
 export default {
     application: {
         meta: {
-            title: "hello everybody",
-            name: "Heramo",
+            title: "QuickStart",
+            name: "QuickStart",
         },
     },
     home: home,
-    // validations: validations,
+    login: login,
+    validations: validations,
 };
