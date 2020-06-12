@@ -24,9 +24,9 @@ import { ScrollupButton } from 'src/app/core-ui/scrollup/ScrollupButton';
 
 import InitialComponent from './AppInitializer';
 
-const mapStateToProps = ({ catalogReducer, profileReducer }: RootState) => {
+const mapStateToProps = ({ catalogReducer }: RootState) => {
     return {
-        profile: profileReducer.profile,
+        profile: catalogReducer.profile,
         minWidth992: catalogReducer.minWidth992,
         darkMode: catalogReducer.darkMode,
         isShowMobileHomeBar: catalogReducer.isShowMobileHomeBar,

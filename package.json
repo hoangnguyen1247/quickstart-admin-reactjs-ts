@@ -76,7 +76,7 @@
     },
     "scripts": {
         "clean:build": "rimraf build",
-        "start": "cross-env HOST=local.quickstart.com react-scripts start",
+        "start": "cross-env NODE_PATH=. REACT_APP_ENV=local HOST=local.quickstart.com react-scripts start",
         "start:dev": "NODE_PATH=. NODE_ENV=development TS_NODE_PROJECT=tsconfig-server.json node -r ts-node/register server/main.ts",
         "start:dev2": "NODE_PATH=. NODE_ENV=development TS_NODE_PROJECT=tsconfig-server.json node -r @babel/register server/main.ts",
         "start:prod": "NODE_PATH=. NODE_ENV=production TS_NODE_PROJECT=tsconfig-server.json node -r ts-node/register server/main.ts",

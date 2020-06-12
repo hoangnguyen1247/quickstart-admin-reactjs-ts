@@ -86,7 +86,10 @@ export function LoginForm({
         if (_validateForm()) {
             if (typeof onLogin === "function") {
                 setPageState(PAGE_STATES.PENDING);
-                onLogin(data, () => {
+                onLogin({
+                    username: fields.username,
+                    password: _passwordInputRef.current ? _passwordInputRef.current.value : "",
+                }, () => {
                     setPageState(PAGE_STATES.DONE);
                 });
             }

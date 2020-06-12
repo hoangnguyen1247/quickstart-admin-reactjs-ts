@@ -1,4 +1,8 @@
 import React from "react";
+import cookie from "react-cookies";
+
+import { LOCAL_STORAGE } from "src/app/utils/Constants";
+import { PropsFromReactRouter } from "src/common";
 
 import { 
     apiAuth_login,
@@ -6,12 +10,38 @@ import {
 
 import { LoginForm } from "./children/LoginForm";
 
-class LoginPage extends React.Component {
+type Props = PropsFromReactRouter & {
+
+}
+
+class LoginPage extends React.Component<Props> {
 
     constructor(props) {
         super(props);
 
         this._handleLoginByEmail = this._handleLoginByEmail.bind(this);
+    }
+
+    componentDidMount() {
+        const {
+            match: { params },
+        } = this.props;
+
+        const provider = params.provider
+        if (provider) {
+            switch (provider) {
+                default:
+                    break;
+            }
+        }
+
+        this._checkLoginState();
+    }
+
+    _checkLoginState() {
+        if (cookie.load(LOCAL_STORAGE.ACCESS_TOKEN)) {
+            this.props.history.push('/');
+        }
     }
 
     _handleLoginByEmail(data, callback) {
