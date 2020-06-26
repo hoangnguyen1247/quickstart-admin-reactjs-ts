@@ -1,301 +1,261 @@
 import React from 'react';
-import { connect, ConnectedProps } from "react-redux";
-import { bindActionCreators, Dispatch } from 'redux';
+import useMedia  from 'use-media';
 import { History, UnregisterCallback } from 'history';
 import { ToastContainer } from "react-toastify";
 import { I18n } from "react-redux-i18n";
 import { Helmet } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { useDispatch } from 'react-redux';
 
-import { RootState } from 'src/reducers';
+import { AnyObject } from 'src/common';
 import { AppContext } from 'src/app/AppContext';
+import { RootState } from "src/reducers";
 
-import { 
-    catalog_changeMinWidth992,
-    catalog_changeDarkMode,
-    catalog_changeMobileSearchBar,
-    catalog_changeMobileActionBar,
-    catalog_changeNavigationInRight,
-
-    catalog_getProfileSuccess,
-} from './AppActions';
+import { useWindowWitdh } from 'src/app/hooks/useWindowWidth';
 
 import { ConfirmDialog } from 'src/app/core-ui/dialog/ConfirmDialog';
 import { ScrollupButton } from 'src/app/core-ui/scrollup/ScrollupButton';
 
 import InitialComponent from './AppInitializer';
 
-const mapStateToProps = ({ catalogReducer }: RootState) => {
-    return {
-        profile: catalogReducer.profile,
-        minWidth992: catalogReducer.minWidth992,
-        darkMode: catalogReducer.darkMode,
-        isShowMobileHomeBar: catalogReducer.isShowMobileHomeBar,
-        isShowMobileSearchBar: catalogReducer.isShowMobileSearchBar,
-        isShowMobileActionBar: catalogReducer.isShowMobileActionBar,
-        navigationInRight: catalogReducer.navigationInRight,
-    };
-};
+const reselectShippers = createSelector<RootState, any, any>(
+    state => state.catalogReducer.userRoles,
+    userRoles => userRoles.filter(userRole => userRole.key === "shipper")
+)
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const stateReducer = (state, action) => {
     return {
-        ...bindActionCreators({
-            changeMinWidth992: catalog_changeMinWidth992,
-            changeDarkMode: catalog_changeDarkMode,
-            changeMobileSearchBar: catalog_changeMobileSearchBar,
-            changeMobileActionBar: catalog_changeMobileActionBar,
-            changeNavigationInRight: catalog_changeNavigationInRight,
-
-            getProfileSuccess: catalog_getProfileSuccess,
-        }, dispatch),
-    };
+        ...state,
+        ...action,
+    }
 }
 
-const connector = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true });
-
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-type Props = PropsFromRedux & {
+type Props = {
     history?: History,
     children: ({ profile }) => React.ReactNode,
-    profile: any,
 };
 
-class AppContainer extends React.Component<Props> {
+const inititalState = {
+    minWidth992: false,
+    darkMode: false,
+    isShowMobileHomeBar: false,
+    isShowMobileSearchBar: false,
+    isShowMobileActionBar: false,
+    navigationInRight: false,
 
-    state = {
-        precacheData: {
-            priceUnitOptions: [],
-        },
-    };
+    profile: undefined,
 
-    unlistenHistory: UnregisterCallback;
-    minWith992MediaQuery: any;
-    darkModeMediaQuery: any;
+    precacheData: {
+        priceUnitOptions: [],
+    },
+};
 
-    _initialComponentRef: { current: null | InitialComponent };
-    _confirmDialogRef: { current: null | ConfirmDialog };
+const AppContainer = ({
+    history,
+    children,
+}) => {
 
-    constructor(props: Props, context: any) {
-        super(props, context);
+    const services = useSelector<RootState, any>(state => state.catalogReducer.services);
+    const shippers = useSelector(reselectShippers);
 
-        this.unlistenHistory = () => {};
+    const [ state, dispatchState ] = React.useReducer(stateReducer, inititalState);
 
-        this._initialComponentRef = React.createRef();
-        this._confirmDialogRef = React.createRef();
+    const applicationI18n = I18n.t("application");
 
-        this.subscribeLocationChange = this.subscribeLocationChange.bind(this);
-        this.unsubscribeLocationChange = this.unsubscribeLocationChange.bind(this);
+    // unlistenHistory: UnregisterCallback;
+    // minWith992MediaQuery: any;
+    // darkModeMediaQuery: any;
 
-        this._changeMobileSearchBar = this._changeMobileSearchBar.bind(this);
-        this._changeMobileActionBar = this._changeMobileActionBar.bind(this);
-        this._changeNavigationInRight = this._changeNavigationInRight.bind(this);
+    const _initialComponentRef = React.useRef<InitialComponent>(null);
+    const _confirmDialogRef = React.useRef<ConfirmDialog>(null);
 
-        this.getUserProfile = this.getUserProfile.bind(this);
-    }
+    // componentDidMount() {
+    //     this.subscribeLocationChange();
+    //     this.subscribeWindowResize();
+    //     this.subscribeConnectionChange();
+    //     this.subscribeMinWidthChange();
+    //     this.subscribeDarkModeChange();
+    // }
 
-    componentDidMount() {
-        this.subscribeLocationChange();
-        this.subscribeWindowResize();
-        this.subscribeConnectionChange();
-        this.subscribeMinWidthChange();
-        this.subscribeDarkModeChange();
-    }
+    // componentDidUpdate(prevProps: Props) {
 
-    componentDidUpdate(prevProps: Props) {
+    // }
 
-    }
+    // componentWillUnmount() {
+    //     this.unsubscribeLocationChange();
+    //     this.unsubscribeWindowResize();
+    //     this.unsubscribeConnectionChange();
+    //     this.unsubscribeMinWidthChange();
+    //     this.unsubscribeDarkModeChange();
+    // }
 
-    componentWillUnmount() {
-        this.unsubscribeLocationChange();
-        this.unsubscribeWindowResize();
-        this.unsubscribeConnectionChange();
-        this.unsubscribeMinWidthChange();
-        this.unsubscribeDarkModeChange();
-    }
+    // subscribeLocationChange() {
+    //     const { history } = this.props;
 
-    subscribeLocationChange() {
-        const { history } = this.props;
+    //     if (history) {
+    //         this.unlistenHistory = history.listen((location, action) => {
+    //             // console.log(action, location.pathname, location.state);
+    //             console.log(action, location.pathname);
+    //         });
+    //     }
+    // };
 
-        if (history) {
-            this.unlistenHistory = history.listen((location, action) => {
-                // console.log(action, location.pathname, location.state);
-                console.log(action, location.pathname);
-            });
-        }
-    };
+    // unsubscribeLocationChange() {
+    //     if (this.unlistenHistory) {
+    //         this.unlistenHistory();
+    //     }
+    // };
 
-    unsubscribeLocationChange() {
-        if (this.unlistenHistory) {
-            this.unlistenHistory();
-        }
-    };
+    // subscribeWindowResize() {
+    //     window.addEventListener('resize', () => {
+    //     }, false);
+    // }
 
-    subscribeWindowResize() {
-        window.addEventListener('resize', () => {
-        }, false);
-    }
+    // unsubscribeWindowResize() {
+    //     window.removeEventListener('resize', () => {
 
-    unsubscribeWindowResize() {
-        window.removeEventListener('resize', () => {
+    //     });
+    // };
 
-        });
-    };
+    // subscribeConnectionChange() {
+    //     window.addEventListener("online", () => {
 
-    subscribeConnectionChange() {
-        window.addEventListener("online", () => {
+    //     });
+    //     window.addEventListener("offline", () => {
 
-        });
-        window.addEventListener("offline", () => {
+    //     });
+    // }
 
-        });
-    }
+    // unsubscribeConnectionChange() {
+    //     window.removeEventListener("online", () => {
 
-    unsubscribeConnectionChange() {
-        window.removeEventListener("online", () => {
+    //     });
+    //     window.removeEventListener("offline", () => {
 
-        });
-        window.removeEventListener("offline", () => {
+    //     });
+    // };
 
-        });
-    };
+    // subscribeMinWidthChange() {
+    //     if (window.matchMedia) {
+    //         this.minWith992MediaQuery = window.matchMedia('(min-width: 992px)');
+    //         this.changeMinWidth992(this.minWith992MediaQuery.matches);
 
-    subscribeMinWidthChange() {
-        if (window.matchMedia) {
-            this.minWith992MediaQuery = window.matchMedia('(min-width: 992px)');
-            this.changeMinWidth992(this.minWith992MediaQuery.matches);
+    //         this.minWith992MediaQuery.addListener((e) => {
+    //             const minWith992Match = e.matches;
+    //             // const { current } = this._confirmDialogRef;
+    //             // if (current) {
+    //                 // current.show({}, () => {
+    //                     this.changeMinWidth992(minWith992Match);
+    //                 // })
+    //             // }
+    //         });
+    //     }
+    // }
 
-            this.minWith992MediaQuery.addListener((e) => {
-                const minWith992Match = e.matches;
-                // const { current } = this._confirmDialogRef;
-                // if (current) {
-                    // current.show({}, () => {
-                        this.changeMinWidth992(minWith992Match);
-                    // })
-                // }
-            });
-        }
-    }
+    // unsubscribeMinWidthChange() {
+    //     if (this.minWith992MediaQuery) {
+    //         this.minWith992MediaQuery.removeListener((e) => {
+    //         });
+    //     }
+    // }
 
-    unsubscribeMinWidthChange() {
-        if (this.minWith992MediaQuery) {
-            this.minWith992MediaQuery.removeListener((e) => {
-            });
-        }
-    }
+    // subscribeDarkModeChange() {
+    //     if (window.matchMedia && window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+    //         this.darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    //         this.changeDarkMode(this.darkModeMediaQuery.matches);
 
-    subscribeDarkModeChange() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
-            this.darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            this.changeDarkMode(this.darkModeMediaQuery.matches);
-
-            this.darkModeMediaQuery.addListener((e) => {
-                const darkModeMatch = e.matches;
-                // console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
+    //         this.darkModeMediaQuery.addListener((e) => {
+    //             const darkModeMatch = e.matches;
+    //             // console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
                 
-                const { current } = this._confirmDialogRef;
-                if (current) {
-                    current.show({}, () => {
-                        this.changeDarkMode(darkModeMatch);
-                    })
-                }
-            });
-        }
-    }
+    //             const { current } = this._confirmDialogRef;
+    //             if (current) {
+    //                 current.show({}, () => {
+    //                     this.changeDarkMode(darkModeMatch);
+    //                 })
+    //             }
+    //         });
+    //     }
+    // }
 
-    unsubscribeDarkModeChange() {
-        if (this.darkModeMediaQuery) {
-            this.darkModeMediaQuery.removeListener((e) => {
-            });
-        }
-    }
+    // unsubscribeDarkModeChange() {
+    //     if (this.darkModeMediaQuery) {
+    //         this.darkModeMediaQuery.removeListener((e) => {
+    //         });
+    //     }
+    // }
 
-    changeMinWidth992(match: boolean) {
-        this.props.changeMinWidth992(match);
+    const minWidth992 = useMedia('(min-width: 992px)');
+    const darkMode = useMedia('(prefers-color-scheme: dark)');
+    const windowWidth = useWindowWitdh();
+
+    const dispatch = useDispatch();
+
+    const updateState = (field, value) => {
+        dispatchState({ [field]: value });
     }
     
-    changeDarkMode(match: boolean) {
-        this.props.changeDarkMode(match);
+    const updateData = (action) => {
+        dispatch(action);
     }
 
-    _changeMobileSearchBar(match: boolean) {
-        this.props.changeMobileSearchBar(match);
-    }
-    
-    _changeMobileActionBar(match: boolean) {
-        this.props.changeMobileActionBar(match);
-    }
-    
-    _changeNavigationInRight(match: boolean) {
-        this.props.changeNavigationInRight(match);
-    }
-
-    getUserProfile() {
-
-    };
-
-    render() {
-        const {
-            history,
-            profile,
+    return (
+        <AppContext.Provider value={{
+            history: history,
+            location: typeof history === "object" ? history.location : {},
+            initialComponentRef: _initialComponentRef,
+            confirmDialogRef: _confirmDialogRef,
 
             minWidth992,
-            isShowMobileHomeBar,
-            isShowMobileSearchBar,
-            isShowMobileActionBar,
-            navigationInRight,
+            darkMode,
 
-            getProfileSuccess,
-        } = this.props;
-        const applicationI18n = I18n.t("application");
+            isShowMobileHomeBar: state.isShowMobileHomeBar,
+            isShowMobileSearchBar: state.isShowMobileSearchBar,
+            isShowMobileActionBar: state.isShowMobileActionBar,
+            navigationInRight: state.navigationInRight,
 
-        return (
-            <AppContext.Provider value={{
-                history: history,
-                location: typeof history === "object" ? history.location : {},
-                initialComponentRef: this._initialComponentRef,
-                confirmDialogRef: this._confirmDialogRef,
-                profile,
+            profile: state.profile,
 
-                minWidth992,
-                isShowMobileHomeBar,
-                isShowMobileSearchBar,
-                isShowMobileActionBar,
-                navigationInRight,
+            shippers,
+            services,
 
-                changeMobileSearchBar: this._changeMobileSearchBar,
-                changeMobileActionBar: this._changeMobileActionBar,
-                changeNavigationInRight: this._changeNavigationInRight,
+            changeMobileHomeBar: (match) => updateState("isShowMobileHomeBar", match),
+            changeMobileSearchBar: (match) => updateState("isShowMobileSearchBar", match),
+            changeMobileActionBar: (match) => updateState("isShowMobileActionBar", match),
+            changeNavigationInRight: (match) => updateState("navigationInRight", match),
 
-                getProfileSuccess,
-            }}>
-                <Helmet>
-                    <title>{applicationI18n.meta.title}</title>
-                </Helmet>
-                <InitialComponent
-                    ref={this._initialComponentRef}
-                />
-                <ConfirmDialog
-                    ref={this._confirmDialogRef}
-                />
-                <ToastContainer
-                    autoClose={5000}
-                />
-                <ScrollupButton
-                    StopPosition={0}
-                    ShowAtPosition={150}
-                    EasingType='easeOutCubic'
-                    AnimationDuration={500}
-                    ContainerClassName='ScrollUpButton__Container'
-                    TransitionClassName='ScrollUpButton__Toggled'
-                    style={{}}
-                    ToggledStyle={{}}
-                />
-                {this.props.children({
-                    profile,
-                })}
-            </AppContext.Provider>
-        );
-    }
+            getProfileSuccess: (profile) => updateState("profile", profile),
+            updateCachedData: (action) => updateData(action),
+        }}>
+            <Helmet>
+                <title>{applicationI18n.meta.title}</title>
+            </Helmet>
+            <InitialComponent
+                ref={_initialComponentRef}
+            />
+            <ConfirmDialog
+                ref={_confirmDialogRef}
+            />
+            <ToastContainer
+                autoClose={5000}
+            />
+            <ScrollupButton
+                StopPosition={0}
+                ShowAtPosition={150}
+                EasingType='easeOutCubic'
+                AnimationDuration={500}
+                ContainerClassName='ScrollUpButton__Container'
+                TransitionClassName='ScrollUpButton__Toggled'
+                style={{}}
+                ToggledStyle={{}}
+            />
+            <p>Window width: {windowWidth}</p>
+            {children({
+                profile: state.profile,
+            })}
+        </AppContext.Provider>
+    );
 }
 
-export default connector(AppContainer);
+export default AppContainer;

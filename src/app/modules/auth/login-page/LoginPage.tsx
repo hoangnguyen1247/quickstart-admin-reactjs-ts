@@ -8,6 +8,8 @@ import {
     apiAuth_login,
 } from "src/app/service/AuthService";
 
+import { AppContext } from "src/app/AppContext";
+
 import { LoginForm } from "./children/LoginForm";
 
 type Props = PropsFromReactRouter & {
@@ -15,6 +17,8 @@ type Props = PropsFromReactRouter & {
 }
 
 class LoginPage extends React.Component<Props> {
+
+    static contextType = AppContext;
 
     constructor(props) {
         super(props);
@@ -50,6 +54,17 @@ class LoginPage extends React.Component<Props> {
                 if (typeof callback === "function") {
                     callback();
                 }
+
+                this.context.getProfileSuccess(res);
+                const { initialComponentRef } = this.context;
+                if (initialComponentRef) {
+                    initialComponentRef.current.loadCommonData();
+                }
+                const { firebaseMessagingRef } = this.context;
+                if (firebaseMessagingRef) {
+                    firebaseMessagingRef.current.getToken();
+                }
+                this.props.history.push("/");
             })
             .catch(error => {
                 if (typeof callback === "function") {

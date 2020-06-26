@@ -9,6 +9,9 @@ import {
     CATALOG__CHANGE_NAVIGATION_IN_RIGHT,
     CATALOG__GET_PROFILE_SUCCESS,
     CATALOG__GET_PROFILE_FAILURE,
+
+    CATALOG__FIND_MANY_SERVICES_SUCCESS,
+    CATALOG__FIND_MANY_SERVICES_FAILURE,
 } from "./AppActions";
 
 const initialState = {
@@ -19,6 +22,9 @@ const initialState = {
     isShowMobileActionBar: false,
     navigationInRight: false,
     profile: null,
+
+    userRoles: [],
+    services: [],
 }
 
 export default function(state = initialState, action = anyobj) {
@@ -62,6 +68,16 @@ export default function(state = initialState, action = anyobj) {
             return {
                 ...state,
                 profile: null,
+            }
+        case CATALOG__FIND_MANY_SERVICES_SUCCESS:
+            return {
+                ...state,
+                services: action.services,
+            }
+        case CATALOG__FIND_MANY_SERVICES_FAILURE:
+            return {
+                ...state,
+                services: [],
             }
         default:
             return state;

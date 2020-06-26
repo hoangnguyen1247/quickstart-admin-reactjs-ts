@@ -5,9 +5,13 @@ import moment from "moment";
 import { LOCAL_STORAGE } from "src/app/utils/Constants";
 
 import { apiAuth_refreshToken } from "src/app/service/AuthService";
+import { apiProfile_getProfile } from "src/app/service/ProfileService";
+import { apiService_search } from "./service/ServiceService";
+
 import { 
-    apiProfile_getProfile,
-} from "src/app/service/ProfileService";
+    catalog_getServicesSuccess,
+    catalog_getServicesFailure,
+} from "./AppActions";
 
 import { AppContext } from "src/app/AppContext";
 
@@ -112,6 +116,17 @@ class InitialComponent extends React.Component {
     }
     
     loadCommonData() {
+        this.loadServices();
+    }
+
+    loadServices() {
+        apiService_search()
+            .then(res => {
+                this.context.updateCachedData(catalog_getServicesSuccess(res.services));
+            })
+            .catch(error => {
+                this.context.updateCachedData(catalog_getServicesFailure());
+            })
     }
 
     render() {

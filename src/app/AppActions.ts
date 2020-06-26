@@ -12,6 +12,9 @@ export const CATALOG__CHANGE_NAVIGATION_IN_RIGHT    = "CATALOG__CHANGE_NAVIGATIO
 export const CATALOG__GET_PROFILE_SUCCESS           = "CATALOG__GET_PROFILE_SUCCESS";
 export const CATALOG__GET_PROFILE_FAILURE           = "CATALOG__GET_PROFILE_FAILURE";
 
+export const CATALOG__FIND_MANY_SERVICES_SUCCESS    = "CATALOG__FIND_MANY_SERVICES_SUCCESS";
+export const CATALOG__FIND_MANY_SERVICES_FAILURE    = "CATALOG__FIND_MANY_SERVICES_FAILURE";
+
 export function catalog_changeMinWidth992(match: boolean) {
     return function(dispatch: Dispatch) {
         dispatch({
@@ -80,5 +83,18 @@ export function catalog_getProfileFailure() {
         dispatch({
             type: CATALOG__GET_PROFILE_FAILURE,
         })
+    }
+}
+
+export function catalog_getServicesSuccess(services: AnyObject[]) {
+    return {
+        type: CATALOG__FIND_MANY_SERVICES_SUCCESS,
+        services: services,
+    }
+}
+
+export function catalog_getServicesFailure() {
+    return {
+        type: CATALOG__FIND_MANY_SERVICES_FAILURE,
     }
 }

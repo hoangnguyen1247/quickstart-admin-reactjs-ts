@@ -13,6 +13,8 @@ export const APIS_AUTH__AUTH_BY_GOOGLE                      = AUTH_ENDPOINT + "/
 export const APIS_AUTH__FORGET_PASSWORD                     = AUTH_ENDPOINT + "/forgot-password"; // PUT
 export const APIS_AUTH__RESET_PASSWORD                      = AUTH_ENDPOINT + "/reset-password"; // PUT
 
+//
+// Account
 export const APIS_USER__GET_PROFILE                         = BASE_ENDPOINT + "/account/profile"; // GET
 export const APIS_USER__CHANGE_PROFILE                      = BASE_ENDPOINT + "/account/profile"; // PUT
 export const APIS_USER__CHANGE_AVATAR                       = BASE_ENDPOINT + "/account/profile/change-avatar"; // PUT
@@ -23,3 +25,7 @@ export const APIS_STAFF__FIND_ONE_BY_ID                     = BASE_ENDPOINT + "/
 export const APIS_STAFF__INSERT                             = BASE_ENDPOINT + "/account/staffs"; // POST
 export const APIS_STAFF__UPDATE                             = BASE_ENDPOINT + "/account/staffs/{id}"; // PUT
 export const APIS_STAFF__DELETE                             = BASE_ENDPOINT + "/account/staffs/{id}"; // DELETE
+
+//
+// Service
+export const APIS_SERVICE__SEARCH                           = BASE_ENDPOINT + "/service/services/search?page={page}&size={size}"; // gET
