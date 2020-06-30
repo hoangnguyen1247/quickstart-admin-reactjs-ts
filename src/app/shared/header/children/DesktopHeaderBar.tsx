@@ -5,7 +5,7 @@ import PlusIcon from "mdi-react/PlusIcon";
 
 import { MoreActionsDropdown } from "./MoreActionsDropdown";
 import { UniversalSearchBar } from "../../universal-search-bar/UniversalSearchBar";
-import { Thumbnail } from "../../../../core-ui/image/Thumbnail";
+import { Thumbnail } from "src/app/core-ui/image/Thumbnail";
 
 type Props = {
     children: React.ReactNode,

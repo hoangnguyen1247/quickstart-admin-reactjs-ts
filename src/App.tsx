@@ -55,7 +55,7 @@ function App({
                 }
                 
                 return (
-                    <div className="routes-container">
+                    <div data-testid="router_container" className="routes-container">
                         <Switch>
                             {routes.map((route, index) => {
                                 const { component: Component, allowRoles, ...rest } = route;

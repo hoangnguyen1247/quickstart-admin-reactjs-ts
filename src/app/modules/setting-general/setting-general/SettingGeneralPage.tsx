@@ -8,11 +8,11 @@ import { Helmet } from "react-helmet-async";
 
 import { AppContext } from "src/app/AppContext";
 
-import { Header } from "src/app/modules/shared/header/Header";
-import { PageInner } from "src/app/modules/shared/page-inner/PageInner";
-import { NavigationBar } from "src/app/modules/shared/navigation/NavigationBar";
-import { Toolbar } from "src/app/modules/shared/toolbar/Toolbar";
-import { Footer } from "src/app/modules/shared/footer/Footer";
+import { Header } from "src/app/shared/header/Header";
+import { PageInner } from "src/app/shared/page-inner/PageInner";
+import { NavigationBar } from "src/app/shared/navigation/NavigationBar";
+import { Toolbar } from "src/app/shared/toolbar/Toolbar";
+import { Footer } from "src/app/shared/footer/Footer";
 
 const mapStateToProps = () => {
     return {

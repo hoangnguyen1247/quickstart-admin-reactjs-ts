@@ -4,7 +4,7 @@ import { Container, Button } from "reactstrap";
 import ArrowRightIcon from "mdi-react/ArrowRightIcon";
 import ArrowLeftIcon from "mdi-react/ArrowLeftIcon";
 
-import { AppContext } from "../../../AppContext";
+import { AppContext } from "src/app/AppContext";
 
 // type Props = {
 // };

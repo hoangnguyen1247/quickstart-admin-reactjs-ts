@@ -10,9 +10,9 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap
 //     apiOrderItem_search,
 // } from "app/service/OrderItemService";
 
-import { AppContext } from "../../../AppContext";
+import { AppContext } from "src/app/AppContext";
 
-import { InputFormGroup } from "../../../core-ui/form-group/InputFormGroup";
+import { InputFormGroup } from "src/app/core-ui/form-group/InputFormGroup";
 
 type Props = {
 };
